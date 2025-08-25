@@ -1,0 +1,7 @@
+{
+  "name": "banco-ficticio",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
