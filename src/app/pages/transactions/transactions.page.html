@@ -1,0 +1,99 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Meu Extrato</ion-title>
+  </ion-toolbar>
+
+  <ion-toolbar color="primary" class="centered-toolbar">
+    <ion-segment [value]="filtro" (ionChange)="alterarFiltro($event)" class="custom-segment">
+      <ion-segment-button value="todos">
+        <ion-label>Todos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="entrada">
+        <ion-label>Entradas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="saida">
+        <ion-label>Saídas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="taxa">
+        <ion-label>Taxas</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (currentUser) {
+    <ion-card color="light">
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-avatar slot="start">
+            <ion-icon name="person-circle" size="large"></ion-icon>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ currentUser.nome }}</h2>
+            <p>Conta: {{ currentUser.conta }}</p>
+            <p>Saldo: R$ {{ currentUser.balance | number:'1.2-2' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  <ion-refresher slot="fixed" (ionRefresh)="carregarExtrato($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (isLoading) {
+    <div class="loading">
+      <ion-spinner></ion-spinner>
+      <p>Carregando extrato...</p>
+    </div>
+  }
+
+  @if (!isLoading && transacoes.length === 0) {
+    <div class="empty-state">
+      <ion-icon name="receipt-outline" size="large"></ion-icon>
+      <h3>Nenhuma transação encontrada</h3>
+      <p>Suas transações aparecerão aqui</p>
+    </div>
+  }
+
+  @if (!isLoading && transacoes.length > 0) {
+    <ion-list>
+      @for (transacao of transacoesFiltradas; track transacao.id) {
+        <ion-item class="transacao-item" color="light">
+          <ion-icon
+            [name]="getIconeTipo(transacao.type)"
+            slot="start"
+            color="light">
+          </ion-icon>
+
+          <ion-label>
+            <h3>{{ transacao.description }}</h3>
+            <p>
+              <ion-badge [color]="getCorStatus(transacao.status)">
+                {{ transacao.status }}
+              </ion-badge>
+              • {{ transacao.createdAt | date:'dd/MM/yyyy HH:mm' }}
+            </p>
+            @if (transacao.fromUserName && transacao.fromUserId !== currentUser?.id) {
+              <p>De: {{ transacao.fromUserName }}</p>
+            }
+            @if (transacao.toUserName && transacao.toUserId !== currentUser?.id) {
+              <p>Para: {{ transacao.toUserName }}</p>
+            }
+          </ion-label>
+
+          <ion-note
+            slot="end"
+            [color]="formatarValor(transacao).cor">
+            {{ formatarValor(transacao).valor }}
+          </ion-note>
+        </ion-item>
+      }
+    </ion-list>
+  }
+</ion-content>

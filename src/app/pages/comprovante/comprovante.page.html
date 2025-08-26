@@ -1,0 +1,54 @@
+<ion-toolbar color="primary">
+  <ion-buttons slot="start">
+    <ion-button (click)="fechar()">
+      <ion-icon slot="icon-only" style="color: #fff;" name="close"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-title class="font-white">Comprovante PIX</ion-title>
+  <ion-buttons slot="end">
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-content class="ion-padding" [fullscreen]="true" color="light">
+  <div class="header-santander">
+    <img
+      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgNDAiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik00MCAxMGMyMC4zIDAgMzAgMTMuMyAzMCAyNXMtMTAgMTUtMzAgMTVTMTAgMzUuMyAxMCAyM3M5LjctMTMgMzAtMTNtMzAgMTVjMC02LjYtNC00LTgtNHMtOCAyLjYtOCA0IDQgNCA4IDQgOC0yLjYgOC00bS0yMiA0YzAgMi44IDIuMiA0IDQgNHM0LTEuMiA0LTQtMi4yLTQtNC00LTQgMS4yLTQgNHoiLz48L3N2Zz4="
+      alt="Santander" class="logo">
+    <h2 class="font-white">Transferência realizada</h2>
+    <p class="data-hora font-white">{{ date }}</p>
+  </div>
+
+  <ion-card class="card-comprovante" >
+    <ion-card-header class="header-success" style="align-items: center;">
+      <ion-icon name="checkmark-circle" class="icon-success"></ion-icon>
+      <ion-card-title>PIX enviado com sucesso!</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item lines="none" class="detalhe-item">
+        <ion-label position="stacked">Valor</ion-label>
+        <div class="valor">R$ {{ amount | number:'1.2-2' }}</div>
+      </ion-item>
+
+      <ion-item lines="none" class="detalhe-item">
+        <ion-label position="stacked">Chave PIX</ion-label>
+        <div class="detalhe-valor">{{ pixKey }}</div>
+      </ion-item>
+
+      <ion-item lines="none" class="detalhe-item">
+        <ion-label position="stacked">Descrição</ion-label>
+        <div class="detalhe-valor">{{ description }}</div>
+      </ion-item>
+
+      <ion-item lines="none" class="detalhe-item">
+        <ion-label position="stacked">ID da Transação</ion-label>
+        <div class="detalhe-valor">{{ transactionId }}</div>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <div class="rodape">
+    <p>Este comprovante não tem validade fiscal</p>
+    <ion-button expand="block" color="primary" (click)="fechar()">Entendido</ion-button>
+  </div>
+</ion-content>

@@ -1,0 +1,321 @@
+.balance-card {
+  margin: 0 0 25px 0;
+
+  ion-card {
+    background: #ffffff;
+    color: #333333;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    margin: 0;
+    
+    ion-card-header {
+      padding: 20px;
+    }
+    
+    ion-card-title {
+      color: #666666;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+    
+    ion-card-subtitle {
+      color: #333333;
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+  }
+}
+
+.quick-amounts {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+  gap: 10px;
+  
+  ion-button {
+    --border-radius: 20px;
+    --padding-start: 15px;
+    --padding-end: 15px;
+    --background: #f8f9fa;
+    --color: #333333;
+    --border-color: #e0e0e0;
+    --border-width: 1px;
+    --border-style: solid;
+    font-weight: 500;
+    font-size: 14px;
+    min-height: 40px;
+    
+    &:hover {
+      --background: #e9ecef;
+    }
+  }
+}
+
+.form-item {
+  margin-bottom: 20px;
+  
+  ion-label {
+    color: #333333;
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  
+  ion-input {
+    --background: #ffffff;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --border-radius: 10px;
+    --border-color: #e0e0e0;
+    --border-width: 1px;
+    --border-style: solid;
+    font-size: 16px;
+    min-height: 50px;
+    
+    &:focus {
+      --border-color: #007bff;
+    }
+  }
+}
+
+.error-message {
+  margin: -5px 0 15px 0;
+  
+  ion-text {
+    small {
+      font-size: 12px;
+      font-weight: 500;
+      color: #dc3545;
+    }
+  }
+}
+
+.submit-button {
+  margin-top: 30px;
+  --border-radius: 25px;
+  --padding-top: 18px;
+  --padding-bottom: 18px;
+  --background: #007bff;
+  --background-activated: #0056b3;
+  --background-focused: #0056b3;
+  --background-hover: #0069d9;
+  font-weight: 600;
+  font-size: 16px;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  height: 50px;
+  
+  &:disabled {
+    --background: #6c757d;
+    opacity: 0.6;
+  }
+}
+
+/* Estilos gerais para seguir o padrão ADOLE PAY */
+ion-content {
+  --background: #f8f9fa;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+}
+
+ion-toolbar {
+  --background: #ffffff;
+  --color: #333333;
+  --border-color: #e0e0e0;
+  --border-width: 0 0 1px 0;
+  --border-style: solid;
+  
+  ion-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+}
+
+ion-back-button {
+  --color: #333333;
+}
+
+/* Container do formulário */
+form {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 10px 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e0e0e0;
+}
+
+/* Header estilo ADOLE PAY */
+.adole-header {
+  text-align: center;
+  margin-bottom: 30px;
+  
+  h1 {
+    color: #333333;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+  }
+  
+  p {
+    color: #666666;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+/* Divisor estilo ADOLE PAY */
+.divider {
+  height: 1px;
+  background: #e0e0e0;
+  margin: 20px 0;
+  width: 100%;
+}
+
+/* Textos secundários */
+.secondary-text {
+  color: #666666;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+/* Responsividade */
+@media (max-width: 360px) {
+  .quick-amounts {
+    flex-wrap: wrap;
+    
+    ion-button {
+      flex: 1;
+      min-width: 70px;
+      font-size: 12px;
+    }
+  }
+  
+  .balance-card ion-card-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  form {
+    padding: 16px;
+  }
+}
+
+/* Estados de foco e hover */
+ion-input:focus-within {
+  --border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+/* Loading spinner */
+ion-spinner {
+  color: white;
+}
+
+/* Ajuste para labels */
+ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --inner-border-width: 0;
+}
+
+/* Estilo minimalista para os botões de valor rápido */
+.quick-amounts ion-button {
+  --background-activated: #e9ecef;
+  --background-focused: #e9ecef;
+  --transition: all 0.2s ease;
+}
+
+/* Sombras suaves */
+ion-card, form {
+  transition: box-shadow 0.2s ease;
+  
+  &:active {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+ion-toolbar {
+  ion-title {
+    color: white;
+  }
+
+  ion-back-button {
+    color: white;
+  }
+}
+
+// Estilos para a seção de contatos frequentes
+.contatos-frequentes {
+  margin-bottom: 20px;
+  
+  ion-label {
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: block;
+    color: #333;
+  }
+  
+  .contatos-lista {
+    display: flex;
+    overflow-x: auto;
+    padding: 8px 0;
+    gap: 16px;
+    
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  
+  .contato-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 60px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    
+    &:active {
+      transform: scale(0.95);
+    }
+    
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+    
+    .nome {
+      font-size: 12px;
+      text-align: center;
+      color: #555;
+      max-width: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+
+.carregando-contatos {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+  
+  ion-spinner {
+    margin-bottom: 10px;
+  }
+}

@@ -1,0 +1,103 @@
+<ion-toolbar color="primary">
+  <ion-title>ADOLE PAY</ion-title>
+  <ion-buttons slot="end">
+    <ion-button (click)="toggleBalance()" class="eye-button">
+      <ion-icon [name]="showBalance ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+    </ion-button>
+    <ion-button (click)="logout()">
+      <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshData($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="header">
+    <div class="welcome-section">
+      <h2>Olá, {{ userName }}! 👋</h2>
+      <p>Gerencie suas finanças de forma simples</p>
+    </div>
+
+  </div>
+
+  <div class="ion-padding content-container">
+    <ion-card class="balance-card ion-no-margin">
+      <ion-card-header>
+        <ion-card-title>Saldo total</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="balance-amount">R$ {{ showBalance ? (balance | number:'1.2-2') : '•••••' }}</div>
+        <div class="balance-limit">Saldo + Limite: R$ {{ showBalance ? (balance + creditLimit | number:'1.2-2') :
+          '•••••'
+          }}</div>
+        <ion-button expand="block" fill="outline" class="statement-button" (click)="openStatement()">
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>
+          Acessar extrato
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="quick-actions-menu ion-no-margin">
+      <ion-grid>
+        <ion-col>
+          <ion-button fill="clear" class="action-button" (click)="openPixTransfer()">
+            <div class="button-content">
+              <ion-icon name="qr-code-outline"></ion-icon>
+              <span>Pix</span>
+            </div>
+          </ion-button>
+        </ion-col>
+
+        @if(accountType === 'admin'){
+        <ion-col>
+          <ion-button fill="clear" class="action-button" (click)="openAdmin()">
+            <div class="button-content">
+              <ion-icon name="construct-outline"></ion-icon>
+              <span>Adm</span>
+            </div>
+          </ion-button>
+        </ion-col>
+        }
+
+        <ion-col>
+          <ion-button fill="clear" class="action-button" (click)="cadastrarChave()">
+            <div class="button-content">
+              <ion-icon name="key-outline"></ion-icon>
+              <span>ID</span>
+            </div>
+          </ion-button>
+        </ion-col>
+
+      </ion-grid>
+    </div>
+
+    <ion-card class="ion-no-margin">
+      <ion-card-header>
+        <ion-card-title>Minhas contas ADOLE PAY</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-icon name="card-outline" slot="start"></ion-icon>
+            <ion-label>Conta Corrente</ion-label>
+            <ion-note slot="end">R$ {{ showBalance ? (balance | number:'1.2-2') : '•••••' }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="cash-outline" slot="start"></ion-icon>
+            <ion-label>Poupança</ion-label>
+            <ion-note slot="end">R$ {{ showBalance ? (savings | number:'1.2-2') : '•••••' }}</ion-note>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="trending-up-outline" slot="start"></ion-icon>
+            <ion-label>Investimentos</ion-label>
+            <ion-note slot="end">R$ {{ showBalance ? (investments | number:'1.2-2') : '•••••' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

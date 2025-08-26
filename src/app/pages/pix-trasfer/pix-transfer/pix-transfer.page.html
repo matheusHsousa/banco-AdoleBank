@@ -1,0 +1,121 @@
+<ion-toolbar color="primary">
+  <ion-buttons slot="start">
+    <ion-back-button defaultHref="/home"></ion-back-button>
+  </ion-buttons>
+  <ion-title>Transferência PIX</ion-title>
+</ion-toolbar>
+
+<ion-content class="ion-padding">
+  <div class="adole-header">
+    <h1>ADOLE PAY</h1>
+    <p>Transferência PIX rápida e segura</p>
+  </div>
+
+  <div class="balance-card">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Saldo disponível</ion-card-title>
+        <ion-card-subtitle>
+          {{ userBalance | currency:'BRL':'symbol':'1.2-2' }}
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+  </div>
+
+  <!-- Seção de contatos do Firebase -->
+  <div class="contatos-frequentes" *ngIf="contatos.length > 0">
+    <ion-label>Contatos disponíveis</ion-label>
+    <div class="contatos-lista">
+      <div 
+        *ngFor="let contato of contatos" 
+        class="contato-item"
+        (click)="selecionarContato(contato)"
+      >
+        <div class="avatar" [style.background-color]="contato.cor">
+          {{ contato.nome[0] | uppercase }}
+        </div>
+        <span class="nome">{{ contato.nome }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="carregandoContatos" class="carregando-contatos">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Carregando contatos...</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+    <div class="form-item">
+      <ion-label position="stacked">Chave PIX</ion-label>
+      <ion-input 
+        fill="outline" 
+        placeholder="Digite a chave PIX do destinatário" 
+        formControlName="pixKey"
+        type="text"
+      ></ion-input>
+    </div>
+
+    <div *ngIf="transferForm.get('pixKey')?.touched && transferForm.get('pixKey')?.invalid" class="error-message">
+      <ion-text color="danger">
+        <small *ngIf="transferForm.get('pixKey')?.errors?.['required']">
+          Campo obrigatório
+        </small>
+        <small *ngIf="transferForm.get('pixKey')?.errors?.['minlength']">
+          Chave muito curta
+        </small>
+      </ion-text>
+    </div>
+
+    <div class="form-item">
+      <ion-label position="stacked">Valor da transferência</ion-label>
+      <ion-input 
+        fill="outline" 
+        placeholder="0,00" 
+        formControlName="amount" 
+        type="number" 
+        step="0.01" 
+        min="0.01"
+      ></ion-input>
+    </div>
+
+    <div class="quick-amounts">
+      <ion-button fill="outline" size="small" (click)="setAmount(10)">R$ 10</ion-button>
+      <ion-button fill="outline" size="small" (click)="setAmount(50)">R$ 50</ion-button>
+      <ion-button fill="outline" size="small" (click)="setAmount(100)">R$ 100</ion-button>
+    </div>
+
+    <div *ngIf="transferForm.get('amount')?.touched && transferForm.get('amount')?.invalid" class="error-message">
+      <ion-text color="danger">
+        <small *ngIf="transferForm.get('amount')?.errors?.['required']">
+          Campo obrigatório
+        </small>
+        <small *ngIf="transferForm.get('amount')?.errors?.['min']">
+          Valor mínimo: R$ 0,01
+        </small>
+      </ion-text>
+    </div>
+
+    <div class="form-item">
+      <ion-label position="stacked">Descrição (opcional)</ion-label>
+      <ion-input 
+        fill="outline" 
+        placeholder="Ex: Pagamento de serviço" 
+        formControlName="description"
+        type="text"
+      ></ion-input>
+    </div>
+
+    <ion-button 
+      type="submit" 
+      expand="block" 
+      class="ion-margin-top submit-button"
+      color="primary"
+      [disabled]="transferForm.invalid || isLoading"
+    >
+      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+      {{ isLoading ? 'Processando...' : 'Transferir' }}
+    </ion-button>
+  </form>
+</ion-content>

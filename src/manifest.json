@@ -1,0 +1,19 @@
+{
+  "name": "Adole Bank",
+  "short_name": "AdoleBank",
+  "description": "Descrição do meu aplicativo Ionic",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3880ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "assets/icon/logoAB.jpg",
+      "sizes": "512x512",
+      "type": "image/jpg"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"],
+  "lang": "pt-BR"
+}

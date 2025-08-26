@@ -1,0 +1,294 @@
+<div class="admin-toolbar"> 
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="light">Painel Administrativo</ion-title>
+  </ion-toolbar>
+
+<ion-toolbar color="primary">
+  <ion-segment [value]="selectedTab" (ionChange)="selecionarAba($event)" class="custom-segment">
+    <ion-segment-button value="usuarios">
+      <ion-icon name="people"></ion-icon>
+      <ion-label>Usuários</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="transferencias">
+      <ion-icon name="swap-horizontal"></ion-icon>
+      <ion-label>Transferências</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="taxas">
+      <ion-icon name="cash"></ion-icon>
+      <ion-label>Taxas</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="nova-conta">
+      <ion-icon name="person-add"></ion-icon>
+      <ion-label>Nova Conta</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+</div>
+
+<ion-content class="ion-padding">
+  <!-- Cabeçalho com saldo -->
+  <div class="admin-header">
+    <h2>ADOLE PAY - Administração</h2>
+    <div class="admin-balance">
+      <ion-chip color="primary">
+        <ion-icon name="wallet"></ion-icon>
+        <ion-label>Seu saldo: {{ saldoAdmin | currency:'BRL' }}</ion-label>
+      </ion-chip>
+    </div>
+  </div>
+
+  <!-- Conteúdo das abas -->
+  <div class="tab-content">
+    <!-- Aba: Usuários -->
+    <div *ngIf="selectedTab === 'usuarios'">
+      <ion-card color="light">
+        <ion-card-header>
+          <ion-card-title>👥 Usuários do Sistema</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list lines="none">
+            <div *ngFor="let usuario of usuarios" (click)="selecionarUsuario(usuario)"
+              [class.selected]="usuarioSelecionado?.id === usuario.id" class="user-item">
+              <ion-avatar slot="start">
+                <ion-icon name="person-circle" size="large" color="medium"></ion-icon>
+              </ion-avatar>
+
+              <ion-label>
+                <h3>{{ usuario.nome }}</h3>
+                <p>Conta: {{ usuario.conta }} | Saldo: {{ usuario.balance | currency:'BRL' }}</p>
+                <p>
+                  <ion-badge [color]="getStatusBadgeColor(usuario.status)">{{ usuario.status }}</ion-badge>
+                  <ion-badge [color]="getTipoBadgeColor(usuario.tipo)">{{ usuario.tipo }}</ion-badge>
+                </p>
+              </ion-label>
+            </div>
+          </ion-list>
+
+          <div *ngIf="usuarios.length === 0" class="empty-state">
+            <ion-icon name="people-outline" size="large" color="medium"></ion-icon>
+            <p>Nenhum usuário cadastrado</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <!-- Aba: Transferências -->
+    <div *ngIf="selectedTab === 'transferencias'">
+      <div *ngIf="!usuarioSelecionado" class="empty-state">
+        <ion-icon name="person-outline" size="large" color="medium"></ion-icon>
+        <p>Selecione um usuário na aba "Usuários" para transferir</p>
+      </div>
+
+      <div *ngIf="usuarioSelecionado">
+        <ion-card color="light">
+          <ion-card-header>
+            <ion-card-title>💸 Transferir para {{ usuarioSelecionado.nome }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="user-info">
+              <ion-grid>
+                <ion-row>
+                  <ion-col size="6">
+                    <strong>Conta:</strong> {{ usuarioSelecionado.conta }}
+                  </ion-col>
+                  <ion-col size="6">
+                    <strong>Saldo:</strong> {{ usuarioSelecionado.balance | currency:'BRL' }}
+                  </ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">
+                    <strong>Status:</strong>
+                    <ion-badge [color]="getStatusBadgeColor(usuarioSelecionado.status)">
+                      {{ usuarioSelecionado.status }}
+                    </ion-badge>
+                  </ion-col>
+                  <ion-col size="6">
+                    <strong>Tipo:</strong>
+                    <ion-badge [color]="getTipoBadgeColor(usuarioSelecionado.tipo)">
+                      {{ usuarioSelecionado.tipo }}
+                    </ion-badge>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+
+            <form [formGroup]="transferenciaForm" (ngSubmit)="realizarTransferencia()" class="action-form">
+              <div>
+                <ion-label position="stacked">Valor da Transferência (R$)</ion-label>
+                <ion-input formControlName="valor" type="number" [max]="saldoAdmin" placeholder="0.00">
+                </ion-input>
+              </div>
+
+              <div class="quick-amounts">
+                <ion-button size="small" fill="outline" (click)="setValorRapido(10)">
+                  R$ 10
+                </ion-button>
+                <ion-button size="small" fill="outline" (click)="setValorRapido(50)">
+                  R$ 50
+                </ion-button>
+                <ion-button size="small" fill="outline" (click)="setValorRapido(100)">
+                  R$ 100
+                </ion-button>
+                <ion-button size="small" fill="outline" (click)="setValorRapido(saldoAdmin)">
+                  Máximo
+                </ion-button>
+              </div>
+
+              <div>
+                <ion-label position="stacked">Descrição (opcional)</ion-label>
+                <ion-input formControlName="descricao" placeholder="Descrição da transferência">
+                </ion-input>
+              </div>
+
+              <ion-button type="submit" expand="block"
+                [disabled]="transferenciaForm.invalid || transferenciaForm.get('valor')?.value > saldoAdmin"
+                class="transfer-button">
+                💰 Transferir
+              </ion-button>
+
+              <div *ngIf="transferenciaForm.get('valor')?.value > saldoAdmin" class="error-message">
+                <ion-text color="danger">
+                  <small>Saldo insuficiente. Máximo: {{ saldoAdmin | currency:'BRL' }}</small>
+                </ion-text>
+              </div>
+            </form>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- Aba: Taxas -->
+    <div *ngIf="selectedTab === 'taxas'">
+      <div *ngIf="!usuarioSelecionado" class="empty-state">
+        <ion-icon name="person-outline" size="large" color="medium"></ion-icon>
+        <p>Selecione um usuário na aba "Usuários" para aplicar taxas</p>
+      </div>
+
+      <div *ngIf="usuarioSelecionado">
+        <ion-card color="light">
+          <ion-card-header>
+            <ion-card-title>⚡ Ações Administrativas</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form [formGroup]="taxaForm" (ngSubmit)="aplicarTaxa()" class="action-form">
+              <div>
+                <ion-label position="stacked">Tipo de Taxa</ion-label>
+                <ion-select formControlName="tipo" interface="action-sheet">
+                  <ion-select-option value="taxa">📊 Taxa</ion-select-option>
+                  <ion-select-option value="multa">⚠️ Multa</ion-select-option>
+                  <ion-select-option value="anuidade">📅 Anuidade</ion-select-option>
+                </ion-select>
+              </div>
+
+              <div>
+                <ion-label position="stacked">Descrição</ion-label>
+                <ion-input formControlName="descricao" placeholder="Descrição da taxa"></ion-input>
+              </div>
+
+              <div>
+                <ion-label position="stacked">Valor (R$)</ion-label>
+                <ion-input formControlName="valor" type="number" placeholder="0.00"></ion-input>
+              </div>
+
+              <ion-button type="submit" expand="block" size="small" fill="outline">
+                💸 Aplicar Taxa
+              </ion-button>
+            </form>
+
+            <div class="action-buttons">
+              <ion-button *ngIf="usuarioSelecionado.status === 'ativo'" color="danger" expand="block" size="small"
+                fill="outline" (click)="bloquearUsuario()">
+                🚫 Bloquear Usuário
+              </ion-button>
+              <ion-button *ngIf="usuarioSelecionado.status !== 'ativo'" color="success" expand="block" size="small"
+                fill="outline" (click)="ativarUsuario()">
+                ✅ Ativar Usuário
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card color="light" *ngIf="usuarioSelecionado.taxas && usuarioSelecionado.taxas.length > 0">
+          <ion-card-header>
+            <ion-card-title>📋 Histórico de Taxas</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none">
+              <div *ngFor="let taxa of usuarioSelecionado.taxas" class="taxa-item">
+                <ion-label>
+                  <h3>{{ taxa.descricao }}</h3>
+                  <p>{{ taxa.tipo | titlecase }} - {{ taxa.valor | currency:'BRL' }}</p>
+                  <p>
+                    <ion-badge
+                      [color]="taxa.status === 'paga' ? 'success' : taxa.status === 'vencida' ? 'danger' : 'warning'">
+                      {{ taxa.status }}
+                    </ion-badge>
+                    • Aplicada em: {{ taxa.dataAplicacao | date:'dd/MM/yyyy' }}
+                  </p>
+                </ion-label>
+              </div>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+
+    <!-- Aba: Nova Conta -->
+    <div *ngIf="selectedTab === 'nova-conta'">
+      <ion-card color="light">
+        <ion-card-header>
+          <ion-card-title>➕ Nova Conta</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <form [formGroup]="novaContaForm" (ngSubmit)="criarNovaConta()">
+            <div>
+              <ion-label position="stacked">Nome completo</ion-label>
+              <ion-input formControlName="nome" placeholder="Digite o nome completo"></ion-input>
+            </div>
+
+            <div>
+              <ion-label position="stacked">Número da Conta</ion-label>
+              <ion-input formControlName="conta" placeholder="Número da conta"></ion-input>
+            </div>
+
+            <div>
+              <ion-label position="stacked">Senha</ion-label>
+              <ion-input formControlName="senha" type="password" placeholder="Senha de acesso"></ion-input>
+            </div>
+
+            <div>
+              <ion-label position="stacked">Saldo Inicial (R$)</ion-label>
+              <ion-input formControlName="balance" type="number" placeholder="0.00"></ion-input>
+            </div>
+
+            <div>
+              <ion-label>Tipo de usuário</ion-label>
+              <ion-select formControlName="tipo" interface="action-sheet">
+                <ion-select-option value="cliente">👤 Cliente</ion-select-option>
+                <ion-select-option value="admin">🛡️ Administrador</ion-select-option>
+              </ion-select>
+            </div>
+
+            <ion-button type="submit" expand="block" [disabled]="novaContaForm.invalid || isLoading"
+              class="submit-button">
+              <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+              {{ isLoading ? 'Criando...' : 'Criar Conta' }}
+            </ion-button>
+          </form>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Carregando...</p>
+  </div>
+</ion-content>

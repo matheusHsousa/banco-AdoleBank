@@ -1,0 +1,93 @@
+<ion-toolbar color="primary-contrast" class="logo">
+  <ion-title class="color-primary">ADOLE PAY</ion-title>
+</ion-toolbar>
+
+<ion-content class="ion-padding login-content">
+  <div class="login-card">
+    <h2 class="color-primary">{{ title }}</h2>
+
+    <form [formGroup]="loginForm">
+
+      <!-- Etapa Usuário -->
+      @if(!showPassword) {
+      <ng-container>
+        <div class="step-conta-container">
+          <label>Digite seu usuário</label>
+          <div class="step-conta">
+            <ion-input fill="outline" placeholder="Digite seu usuário" formControlName="conta"
+              (keyup.enter)="nextStep()" type="text" inputmode="text">
+            </ion-input>
+
+            <!-- Mensagem de erro do usuário -->
+            @if(loginForm.get('conta')?.touched && loginForm.get('conta')?.invalid){
+            <ion-text color="danger">
+              @if(loginForm.get('conta')?.errors?.['required']){
+              <small>
+                O usuário é obrigatório.
+              </small>
+              }
+
+              @if(loginForm.get('conta')?.errors?.['pattern']){
+              <small>
+                O usuário deve conter apenas números e letras.
+              </small>
+              }
+            </ion-text>
+            }
+
+          </div>
+        </div>
+      </ng-container>
+      }
+
+      <!-- Etapa Senha -->
+      @if(showPassword) {
+      <ng-container>
+        <div class="step-senha">
+          <div class="conta-info">
+            <span class="conta-label">Usuário: {{ loginForm.get('conta')?.value }}</span>
+            <ion-button fill="clear" size="small" (click)="editConta()">
+              <ion-icon name="create-outline"></ion-icon>
+              Alterar
+            </ion-button>
+          </div>
+
+          <div class="step-conta-container">
+            <label position="floating">Senha</label>
+
+            <ion-input fill="outline" placeholder="Digite sua senha" type="number" inputmode="numeric"
+              formControlName="password" (keyup.enter)="login()">
+              <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+            </ion-input>
+          </div>
+
+          @if(loginForm.get('password')?.touched && loginForm.get('password')?.invalid){
+          <ion-text color="danger">
+            @if(loginForm.get('password')?.errors?.['required']){]
+            <small>
+              A senha é obrigatória.
+            </small>
+            }
+            @if(loginForm.get('password')?.errors?.['pattern']){
+            <small>
+              A senha deve conter apenas números.
+            </small>
+            }
+          </ion-text>
+          }
+
+        </div>
+      </ng-container>
+      }
+    </form>
+  </div>
+
+  <!-- Botão fixo no fim -->
+  <div class="fixed-button">
+    <ion-button expand="block" shape="round" (click)="showPassword ? login() : nextStep()" [disabled]="showPassword 
+        ? (loginForm.get('password')?.invalid || !loginForm.get('password')?.value) 
+        : loginForm.get('conta')?.invalid">
+      {{ showPassword ? 'Entrar' : 'Próximo' }}
+    </ion-button>
+  </div>
+</ion-content>

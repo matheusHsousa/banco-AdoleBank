@@ -1,0 +1,256 @@
+/* admin.page.scss - Adições para os cards separados */
+ion-card {
+  margin-bottom: 20px;
+  border-radius: 12px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+ion-card-header {
+  background: var(--ion-color-light);
+  border-bottom: 1px solid var(--ion-color-light-shade);
+
+  ion-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ion-color-primary);
+  }
+}
+
+/* Estilo para os cards de ações */
+.action-form {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Divisor entre seções */
+.divider {
+  height: 1px;
+  background: var(--ion-color-light-shade);
+  margin: 20px 0;
+  width: 100%;
+}
+
+/* Espaçamento entre os botões de ação */
+.action-buttons {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Destaque para o usuário selecionado */
+.user-item.selected {
+  --background: rgba(var(--ion-color-primary-rgb), 0.1);
+  border: 2px solid var(--ion-color-primary);
+  border-radius: 12px;
+}
+
+.user-item {
+  padding: 10px;
+}
+
+/* Responsividade para grid de informações */
+.user-info {
+  ion-grid {
+    padding: 0;
+  }
+
+  ion-row {
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ion-col {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+/* Estilo para lista de taxas */
+.taxa-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--ion-color-light-shade);
+
+  &:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  ion-label {
+    h3 {
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--ion-color-dark);
+    }
+
+    p {
+      margin: 4px 0;
+      color: var(--ion-color-medium);
+      font-size: 0.9rem;
+    }
+  }
+}
+
+/* Quick amounts buttons */
+.quick-amounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+
+  ion-button {
+    --border-radius: 16px;
+    --padding-start: 12px;
+    --padding-end: 12px;
+    font-size: 12px;
+    min-height: 32px;
+    flex: 1;
+    min-width: 70px;
+  }
+}
+
+/* Botão de transferência */
+.transfer-button {
+  --background: var(--ion-color-success);
+  --background-activated: var(--ion-color-success-shade);
+  --background-focused: var(--ion-color-success-shade);
+  --background-hover: var(--ion-color-success-tint);
+  margin-top: 16px;
+}
+
+/* Mensagem de erro */
+.error-message {
+  text-align: center;
+  margin-top: 8px;
+
+  ion-text {
+    small {
+      font-weight: 500;
+    }
+  }
+}
+
+/* Estado vazio */
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+
+  ion-spinner {
+    width: 48px;
+    height: 48px;
+  }
+
+  p {
+    margin-top: 16px;
+    color: var(--ion-color-primary);
+    font-weight: 500;
+  }
+}
+
+ion-list {
+  background-color: var(--ion-color-light);
+}
+
+/* Aplicar apenas ao toolbar principal, não ao do segment */
+ion-toolbar:first-of-type {
+  ion-title {
+    color: white;
+  }
+
+  ion-buttons ion-back-button {
+    color: white;
+  }
+}
+
+
+/* No seu admin.page.scss */
+.custom-segment {
+  --background: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente branco */
+  border-radius: 50px; /* Bordas arredondadas */
+  padding: 4px;
+  margin: 8px 0;
+}
+
+.custom-segment ion-segment-button {
+  --background: transparent;
+  --background-checked: white; /* Fundo branco quando selecionado */
+  --color: white; /* Texto branco quando não selecionado */
+  --color-checked: black; /* Texto preto quando selecionado */
+  --border-radius: 50px;
+  --indicator-color: transparent; /* Remove o indicador padrão */
+  min-height: 40px;
+  margin: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Ícones - brancos quando não selecionados, pretos quando selecionados */
+.custom-segment ion-segment-button ion-icon {
+  color: white; /* Ícone branco por padrão */
+  transition: color 0.3s ease;
+}
+
+.custom-segment ion-segment-button.segment-button-checked ion-icon {
+  color: black; /* Ícone preto quando selecionado */
+}
+
+/* Texto - branco quando não selecionado, preto quando selecionado */
+.custom-segment ion-segment-button ion-label {
+  color: white; /* Texto branco por padrão */
+  transition: color 0.3s ease;
+}
+
+.custom-segment ion-segment-button.segment-button-checked ion-label {
+  color: black; /* Texto preto quando selecionado */
+}
+
+/* Efeito de hover nos não selecionados */
+.custom-segment ion-segment-button:not(.segment-button-checked):hover {
+  --background: rgba(255, 255, 255, 0.1);
+}
+
+/* Estilo para o botão selecionado */
+.custom-segment ion-segment-button.segment-button-checked {
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.admin-header {
+  text-align: center;
+}

@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ isEditing ? 'Editar Chave PIX' : 'Cadastrar Chave PIX' }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="pixForm" (ngSubmit)="onSubmit()">
+    <ion-item class="form-item">
+      <ion-label position="stacked">Tipo de Chave</ion-label>
+      <ion-select formControlName="type" interface="action-sheet">
+        <ion-select-option *ngFor="let type of pixTypes" [value]="type.value">
+          {{ type.label }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item class="form-item">
+      <ion-label position="stacked">Chave PIX</ion-label>
+      <ion-input formControlName="key" [placeholder]="getCurrentTypeConfig()?.placeholder"
+        [type]="selectedType === 'email' ? 'email' : 'text'" (ionInput)="formatPhoneNumber($event)"
+        (ionBlur)="formatPhoneNumber($event)" [readonly]="selectedType === 'random'">
+      </ion-input>
+
+    </ion-item>
+
+    <div *ngIf="pixForm.get('key')?.touched && pixForm.get('key')?.invalid" class="error-message">
+      <ion-text color="danger">
+        <small *ngIf="pixForm.get('key')?.errors?.['required']">
+          Campo obrigatório
+        </small>
+        <small *ngIf="pixForm.get('key')?.errors?.['pattern']">
+          Formato inválido para {{ getCurrentTypeConfig()?.label | lowercase }}
+        </small>
+      </ion-text>
+    </div>
+
+    <ion-item class="form-item">
+      <ion-label>Chave Ativa</ion-label>
+      <ion-toggle formControlName="isActive"></ion-toggle>
+    </ion-item>
+
+    <ion-button type="submit" expand="block" class="ion-margin-top submit-button" [disabled]="pixForm.invalid">
+      {{ isEditing ? 'Atualizar' : 'Cadastrar' }} Chave
+    </ion-button>
+
+    <ion-button *ngIf="isEditing" expand="block" fill="outline" color="medium" class="ion-margin-top cancel-button"
+      (click)="cancelEdit()">
+      Cancelar Edição
+    </ion-button>
+  </form>
+
+  <ion-list *ngIf="userPixKeys.length > 0" class="pix-list">
+    <ion-list-header>
+      <ion-label>Minhas Chaves PIX</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let pixKey of userPixKeys" class="pix-item">
+      <ion-label>
+        <h3>{{ getTypeLabel(pixKey.type) }}</h3>
+        <p>{{ pixKey.key }}</p>
+        <p>
+          <ion-badge [color]="pixKey.isActive ? 'success' : 'medium'">
+            {{ pixKey.isActive ? 'Ativa' : 'Inativa' }}
+          </ion-badge>
+        </p>
+      </ion-label>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="editPixKey(pixKey)" fill="clear" class="edit-button">
+          <ion-icon name="pencil" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button (click)="deletePixKey(pixKey.id)" fill="clear" color="danger" class="delete-button">
+          <ion-icon name="trash" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>

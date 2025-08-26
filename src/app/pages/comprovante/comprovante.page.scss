@@ -1,0 +1,111 @@
+ion-toolbar {
+  --background: #ec0000; // Vermelho Santander
+  --color: #fff;
+}
+
+.header-santander {
+  text-align: center;
+  padding: 16px 0;
+  background: linear-gradient(to bottom, #ec0000, #cc0000);
+  border-radius: 0 0 20px 20px;
+  margin: -16px -16px 20px -16px;
+  color: white;
+  align-items: center;
+  
+  .logo {
+    height: 30px;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    margin: 5px 0;
+    font-weight: 600;
+  }
+  
+  .data-hora {
+    opacity: 0.9;
+    font-size: 0.9rem;
+    margin: 0;
+  }
+}
+
+.font-white {
+  color: #fff;
+}
+
+ion-item {
+  --background: #fffcfc;
+}
+
+.card-comprovante {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  align-items: center;
+  
+  .header-success {
+    text-align: center;
+    padding: 20px;
+    background: #f6f6f6;
+    
+    .icon-success {
+      font-size: 48px;
+      color: #00aa4f; // Verde Santander
+      margin-bottom: 10px;
+    }
+    
+    ion-card-title {
+      font-weight: 600;
+      color: #333;
+      font-size: 1.2rem;
+    }
+  }
+  
+  ion-card-content {
+    padding: 16px;
+    
+    .detalhe-item {
+      --padding-start: 0;
+      --inner-padding-end: 0;
+      margin-bottom: 20px;
+      
+      ion-label {
+        font-size: 0.85rem;
+        color: #777;
+        font-weight: 500;
+        margin-bottom: 5px;
+      }
+      
+      .valor {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ec0000; // Vermelho Santander
+      }
+      
+      .detalhe-valor {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #333;
+        word-break: break-all;
+      }
+    }
+  }
+}
+
+.rodape {
+  text-align: center;
+  margin-top: 20px;
+  
+  p {
+    font-size: 0.8rem;
+    color: #777;
+    margin-bottom: 20px;
+  }
+  
+  ion-button {
+    margin-bottom: 10px;
+    --border-radius: 8px;
+    font-weight: 600;
+  }
+}
