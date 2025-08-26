@@ -54,14 +54,16 @@ ion-card-header {
   padding: 10px;
 }
 
-/* Responsividade para grid de informações */
 .user-info {
+
   ion-grid {
     padding: 0;
   }
 
   ion-row {
     margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
 
     &:last-child {
       margin-bottom: 0;
@@ -203,19 +205,25 @@ ion-toolbar:first-of-type {
 
 /* No seu admin.page.scss */
 .custom-segment {
-  --background: rgba(255, 255, 255, 0.2); /* Fundo semi-transparente branco */
-  border-radius: 50px; /* Bordas arredondadas */
+  --background: rgba(255, 255, 255, 0.2);
+  /* Fundo semi-transparente branco */
+  border-radius: 50px;
+  /* Bordas arredondadas */
   padding: 4px;
   margin: 8px 0;
 }
 
 .custom-segment ion-segment-button {
   --background: transparent;
-  --background-checked: white; /* Fundo branco quando selecionado */
-  --color: white; /* Texto branco quando não selecionado */
-  --color-checked: black; /* Texto preto quando selecionado */
+  --background-checked: white;
+  /* Fundo branco quando selecionado */
+  --color: white;
+  /* Texto branco quando não selecionado */
+  --color-checked: black;
+  /* Texto preto quando selecionado */
   --border-radius: 50px;
-  --indicator-color: transparent; /* Remove o indicador padrão */
+  --indicator-color: transparent;
+  /* Remove o indicador padrão */
   min-height: 40px;
   margin: 2px;
   transition: all 0.3s ease;
@@ -223,22 +231,26 @@ ion-toolbar:first-of-type {
 
 /* Ícones - brancos quando não selecionados, pretos quando selecionados */
 .custom-segment ion-segment-button ion-icon {
-  color: white; /* Ícone branco por padrão */
+  color: white;
+  /* Ícone branco por padrão */
   transition: color 0.3s ease;
 }
 
 .custom-segment ion-segment-button.segment-button-checked ion-icon {
-  color: black; /* Ícone preto quando selecionado */
+  color: black;
+  /* Ícone preto quando selecionado */
 }
 
 /* Texto - branco quando não selecionado, preto quando selecionado */
 .custom-segment ion-segment-button ion-label {
-  color: white; /* Texto branco por padrão */
+  color: white;
+  /* Texto branco por padrão */
   transition: color 0.3s ease;
 }
 
 .custom-segment ion-segment-button.segment-button-checked ion-label {
-  color: black; /* Texto preto quando selecionado */
+  color: black;
+  /* Texto preto quando selecionado */
 }
 
 /* Efeito de hover nos não selecionados */
