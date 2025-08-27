@@ -111,6 +111,6 @@ body {
 ion-input {
   border: 1px solid #ccc;
   border-radius: 5px;
-  padding-left: 3px !important;
-
+  --padding-start: 8px !important;
+  --padding-end: 8px;
 }
