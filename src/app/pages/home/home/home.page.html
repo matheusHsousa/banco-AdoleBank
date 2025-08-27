@@ -34,10 +34,13 @@
         <div class="balance-limit">Saldo + Limite: R$ {{ showBalance ? (balance + creditLimit | number:'1.2-2') :
           '•••••'
           }}</div>
-        <ion-button expand="block" fill="outline" class="statement-button" (click)="openStatement()">
+
+        <div>
+          <ion-button expand="block" fill="outline" (click)="openStatement()">
           <ion-icon name="document-text-outline" slot="start"></ion-icon>
           Acessar extrato
         </ion-button>
+        </div>
       </ion-card-content>
     </ion-card>
 
@@ -71,6 +74,7 @@
             </div>
           </ion-button>
         </ion-col>
+     
 
       </ion-grid>
     </div>

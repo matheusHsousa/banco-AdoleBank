@@ -114,3 +114,13 @@ ion-input {
   --padding-start: 8px !important;
   --padding-end: 8px;
 }
+
+ion-back-button {
+  .button-text {
+    display: none !important;
+  }
+  
+  &::part(text) {
+    display: none !important;
+  }
+}
