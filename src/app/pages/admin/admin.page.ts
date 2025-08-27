@@ -110,6 +110,7 @@ export class AdminPage implements OnInit {
         this.taxaForm.reset();
         this.saldoAdmin = this.authService.getCurrentUser()?.balance || 0;
         await this.carregarUsuarios();
+        this.carregarSaldoAdmin();
       } else {
         await this.presentAlert('Erro', result.message);
       }

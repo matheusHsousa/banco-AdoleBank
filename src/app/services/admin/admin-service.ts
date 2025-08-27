@@ -139,7 +139,7 @@ export class AdminService {
       const db = this.firebase.getFirestore();
       const batch = writeBatch(db);
 
-      // 1. Buscar dados do usuário
+      // 1. Buscar dados do usuário (que receberá a taxa)
       const userDoc = doc(db, "usuarios", userId);
       const userSnapshot = await getDoc(userDoc);
 
@@ -149,31 +149,42 @@ export class AdminService {
 
       const userData = userSnapshot.data() as User;
 
-      // 2. Verificar se usuário tem saldo suficiente
+      // 2. Buscar dados atualizados do admin do Firestore
+      const adminDoc = doc(db, "usuarios", admin.id);
+      const adminSnapshot = await getDoc(adminDoc);
+
+      if (!adminSnapshot.exists()) {
+        return { success: false, message: 'Admin não encontrado' };
+      }
+
+      const adminData = adminSnapshot.data() as User;
+      const saldoAdminAtual = adminData.balance || 0;
+
+      // 3. Verificar se usuário tem saldo suficiente
       if (userData.balance < taxaData.valor) {
         return { success: false, message: 'Saldo insuficiente do usuário para pagar a taxa' };
       }
 
-      // 3. Debitar do usuário
+      // 4. Debitar do usuário
       const novoSaldoUsuario = userData.balance - taxaData.valor;
       batch.update(userDoc, {
         balance: novoSaldoUsuario,
         updatedAt: new Date()
       });
 
-      // 4. Creditar no admin
-      const adminDoc = doc(db, "usuarios", admin.id);
-      const novoSaldoAdmin = (admin.balance || 0) + taxaData.valor;
+      // 5. Creditar no admin (usando dados atualizados do Firestore)
+      const novoSaldoAdmin = saldoAdminAtual + taxaData.valor;
       batch.update(adminDoc, {
         balance: novoSaldoAdmin,
         updatedAt: new Date()
       });
 
+      // 6. Adicionar taxa ao array de taxas do usuário
       const novaTaxa: Taxa = {
         id: this.generateId(),
         ...taxaData,
         dataAplicacao: new Date(),
-        status: 'paga', 
+        status: 'paga',
         userId
       };
 
@@ -182,26 +193,10 @@ export class AdminService {
         taxas: [...taxas, novaTaxa]
       });
 
-      // 6. Registrar transação para histórico
+      // 7. Registrar transação para histórico
       const transactionId = this.generateId();
-      const transaction = {
-        id: transactionId,
-        type: 'taxa',
-        fromUserId: userId,
-        fromUserName: userData.nome,
-        toUserId: admin.id,
-        toUserName: admin.nome,
-        amount: taxaData.valor,
-        description: `Taxa: ${taxaData.descricao}`,
-        status: 'completed',
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
 
-      const transactionDoc = doc(db, "transactions", transactionId);
-      batch.set(transactionDoc, transaction);
-
-      // 7. Adicionar às transações dos usuários
+      // Transação para o usuário (débito)
       const userTransactionRef = {
         id: transactionId,
         type: 'taxa_out',
@@ -216,6 +211,7 @@ export class AdminService {
         updatedAt: new Date()
       };
 
+      // Transação para o admin (crédito)
       const adminTransactionRef = {
         id: transactionId,
         type: 'taxa_in',
@@ -230,6 +226,7 @@ export class AdminService {
         updatedAt: new Date()
       };
 
+      // Adicionar transações aos arrays
       batch.update(userDoc, {
         transactions: arrayUnion(userTransactionRef)
       });
@@ -238,8 +235,10 @@ export class AdminService {
         transactions: arrayUnion(adminTransactionRef)
       });
 
+      // 8. Executar todas as operações em batch
       await batch.commit();
 
+      // 9. Atualizar saldo local do admin no localStorage
       this.updateLocalBalance(admin.id, taxaData.valor);
 
       return {
