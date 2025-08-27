@@ -98,6 +98,6 @@ export interface Transacao {
   status: 'completed' | 'pending' | 'failed' | 'refunded';
   createdAt: Date | any;
   updatedAt: Date | any;
-  taxaType?: 'multa' | 'taxa' | 'anuidade';
+  taxaType?: 'multa' | 'taxa' | 'anuidade' | undefined;
   paymentMethod?: 'pix' | 'ted' | 'doc';
 }
