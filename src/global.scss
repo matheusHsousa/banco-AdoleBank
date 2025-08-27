@@ -107,3 +107,10 @@ body {
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
 }
+
+ion-input {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-left: 3px !important;
+
+}
